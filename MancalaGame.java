@@ -29,16 +29,7 @@ public class MancalaGame extends JFrame {
  }
  }
 
- private void playSound(String filename) {
- try {
- AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(filename));
- Clip clip = AudioSystem.getClip();
- clip.open(audioIn);
- clip.start();
- } catch (Exception e) {
- e.printStackTrace();
- }
- }
+
 
  private class BoardPanel extends JPanel {
  private Rectangle[] pitBounds = new Rectangle[14];
@@ -141,7 +132,6 @@ public class MancalaGame extends JFrame {
  }
 
  board[currentIndex[0]]++;
- playSound("drop.wav");
  remainingStones[0]--;
  boardPanel.repaint();
 
