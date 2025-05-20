@@ -1,8 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.sound.sampled.*;
+//import javax.sound.sampled.*;
 import java.io.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+//import java.io.File;
+try {
+    File soundFile = new File("/Users/anvitanattuva/Downloads/stone-54286\ \(mp3cut.net\).wav ");
+    AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+    Clip clip = AudioSystem.getClip();
+    clip.open(audioIn);
+} catch (Exception e) {
+    e.printStackTrace();
+}
 
 public class MancalaGame extends JFrame {
  private int[] board = new int[14]; // 6 pits per side + 2 stores
@@ -130,7 +142,7 @@ public class MancalaGame extends JFrame {
  if ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6)) {
  return; // skip opponent's store
  }
-
+ clip.start();
  board[currentIndex[0]]++;
  remainingStones[0]--;
  boardPanel.repaint();
