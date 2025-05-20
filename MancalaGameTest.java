@@ -14,6 +14,7 @@ try {
     clip.open(audioIn);
 } catch (Exception e) {
     e.printStackTrace();
+    
 }
 
 public class MancalaGame extends JFrame {
