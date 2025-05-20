@@ -7,7 +7,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 //import java.io.File;
-try {
+/*try {
     File soundFile = new File("/Users/anvitanattuva/Downloads/stone-54286\ \(mp3cut.net\).wav ");
     AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
     Clip clip = AudioSystem.getClip();
@@ -15,7 +15,7 @@ try {
 } catch (Exception e) {
     e.printStackTrace();
     
-}
+}*/
 
 public class MancalaGame extends JFrame {
  private int[] board = new int[14]; // 6 pits per side + 2 stores
@@ -74,8 +74,8 @@ public class MancalaGame extends JFrame {
  int pitHeight = 80;
 
  // Draw stores
- pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6 + 40); // Player 1 store (left)
- pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6 + 40); // Player 2 store (right)
+ pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 - 10, pitWidth, pitHeight * 6 + 40); // Player 1 store (left)
+ pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 10, pitWidth, pitHeight * 6 + 40); // Player 2 store (right)
 
  g2.setColor(new Color(139, 69, 19));
  g2.fillRect(pitBounds[6].x, pitBounds[6].y, pitBounds[6].width, pitBounds[6].height);
@@ -143,7 +143,7 @@ public class MancalaGame extends JFrame {
  if ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6)) {
  return; // skip opponent's store
  }
- clip.start();
+ //clip.start();
  board[currentIndex[0]]++;
  remainingStones[0]--;
  boardPanel.repaint();
