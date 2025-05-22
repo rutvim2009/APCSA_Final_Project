@@ -27,6 +27,7 @@ public class MancalaGame extends JFrame {
  setTitle("Mancala Game - Vertical with Animation & Sound");
  setDefaultCloseOperation(EXIT_ON_CLOSE);
  setSize(400, 800);
+ setBounds(0, 1000, 400, 800);
  setResizable(false);
 
  initializeBoard();
