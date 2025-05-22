@@ -7,27 +7,29 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 //import java.io.File;
-/*try {
-    File soundFile = new File("/Users/anvitanattuva/Downloads/stone-54286\ \(mp3cut.net\).wav ");
-    AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-    Clip clip = AudioSystem.getClip();
-    clip.open(audioIn);
-} catch (Exception e) {
-    e.printStackTrace();
-    
-}*/
 
-public class MancalaGameTest extends JFrame {
+public class MancalaGame extends JFrame {
+ private Clip clip;
  private int[] board = new int[14]; // 6 pits per side + 2 stores
  private boolean playerOneTurn = true;
  private BoardPanel boardPanel;
  private boolean animating = false;
 
- public MancalaGameTest() {
+ public MancalaGame() {
  setTitle("Mancala Game - Vertical with Animation & Sound");
  setDefaultCloseOperation(EXIT_ON_CLOSE);
  setSize(400, 800);
+ setBounds(0, 1000, 400, 800);
  setResizable(false);
+
+ try {
+    File soundFile = new File("/Users/anvitanattuva/Downloads/newproj.wav");
+    AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+    clip = AudioSystem.getClip();
+    clip.open(audioIn);
+} catch (Exception e) {
+    e.printStackTrace();
+}
 
  initializeBoard();
  boardPanel = new BoardPanel();
@@ -74,8 +76,8 @@ public class MancalaGameTest extends JFrame {
  int pitHeight = 80;
 
  // Draw stores
- pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 - 10, pitWidth, pitHeight * 6 + 40); // Player 1 store (left)
- pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 10, pitWidth, pitHeight * 6 + 40); // Player 2 store (right)
+ pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 + 530, pitWidth+250, pitHeight * 6-400); // Player 1 store (left)
+ pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6-400); // Player 2 store (right)
 
  g2.setColor(new Color(139, 69, 19));
  g2.fillRect(pitBounds[6].x, pitBounds[6].y, pitBounds[6].width, pitBounds[6].height);
@@ -143,9 +145,12 @@ public class MancalaGameTest extends JFrame {
  if ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6)) {
  return; // skip opponent's store
  }
- //clip.start();
+ clip.setFramePosition(0);
+ clip.start();
  board[currentIndex[0]]++;
  remainingStones[0]--;
+
+ // ✅ Repaint after placing each stone
  boardPanel.repaint();
 
  if (remainingStones[0] == 0) {
@@ -222,6 +227,6 @@ public class MancalaGameTest extends JFrame {
  }
 
  public static void main(String[] args) {
- SwingUtilities.invokeLater(MancalaGameTest::new);
+ SwingUtilities.invokeLater(MancalaGame::new);
  }
 }
