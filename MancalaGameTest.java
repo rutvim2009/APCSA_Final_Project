@@ -74,7 +74,7 @@ public class MancalaGame extends JFrame {
  int pitHeight = 80;
 
  // Draw stores
- pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6-400); // Player 1 store (left)
+ pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 + 530, pitWidth+250, pitHeight * 6-400); // Player 1 store (left)
  pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6-400); // Player 2 store (right)
 
  g2.setColor(new Color(139, 69, 19));
