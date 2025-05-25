@@ -177,60 +177,53 @@ public class MancalaGame extends JFrame {
 
     private void animateMove(int startIndex, int stones) {
         animating = true;
-        Timer timer = new Timer(300, null);
-
+    
         final int[] currentIndex = {startIndex};
         final int[] remainingStones = {stones};
-
+    
+        Timer timer = new Timer(300, null);
         timer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 currentIndex[0] = (currentIndex[0] + 1) % 14;
-
+    
+                // Skip opponent's store
                 if ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6)) {
-                    return; // Skip opponent's store
+                    currentIndex[0] = (currentIndex[0] + 1) % 14;
                 }
-
-                clip.setFramePosition(0);
-                clip.start();
+    
+                // Play sound each time a pebble is placed
+                if (clip != null) {
+                    clip.setFramePosition(0);
+                    clip.start();
+                }
+    
                 board[currentIndex[0]]++;
                 remainingStones[0]--;
-
+    
                 boardPanel.repaint();
-
+    
                 if (remainingStones[0] == 0) {
-                    timer.stop();
-
-                    int last = currentIndex[0];
-
-                    // Capture logic
-                    if (playerOneTurn && last >= 0 && last <= 5 && board[last] == 1 && board[12 - last] > 0) {
-                        board[6] += board[last] + board[12 - last];
-                        board[last] = board[12 - last] = 0;
-                    } else if (!playerOneTurn && last >= 7 && last <= 12 && board[last] == 1 && board[12 - last] > 0) {
-                        board[13] += board[last] + board[12 - last];
-                        board[last] = board[12 - last] = 0;
-                    }
-
-                    // Continue move if last pit is on player's side and not empty
-                    if (board[last] > 1 &&
-                            ((playerOneTurn && last >= 0 && last <= 5) || (!playerOneTurn && last >= 7 && last <= 12))) {
-                        int nextStones = board[last];
-                        board[last] = 0;
-                        animateMove(last, nextStones);
-                        return;
+                    int lastPit = currentIndex[0];
+                    boolean onPlayersSide = playerOneTurn ? (lastPit >= 0 && lastPit <= 5) : (lastPit >= 7 && lastPit <= 12);
+    
+                    if (onPlayersSide && board[lastPit] > 1) {
+                        remainingStones[0] = board[lastPit];
+                        board[lastPit] = 0;
                     } else {
+                        timer.stop();
                         playerOneTurn = !playerOneTurn;
+                        animating = false;
+                        checkGameOver();
                     }
-
-                    animating = false;
-                    checkGameOver();
-                    boardPanel.repaint();
                 }
             }
         });
-
+    
         timer.start();
     }
+    
+    
+    
 
     private void checkGameOver() {
         boolean player1Empty = true;
