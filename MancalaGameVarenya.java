@@ -1,6 +1,4 @@
-public class MancalaGameVarenya {
-    
-}
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -20,17 +18,17 @@ import javax.sound.sampled.Clip;
     
 }*/
 
-public class MancalaGame extends JFrame {
+public class MancalaGameVarenya  extends JFrame {
  private int[] board = new int[14]; // 6 pits per side + 2 stores
  private boolean playerOneTurn = true;
  private BoardPanel boardPanel;
  private boolean animating = false;
 
- public MancalaGame() {
+ public MancalaGameVarenya() {
  setTitle("Mancala Game - Vertical with Animation & Sound");
  setDefaultCloseOperation(EXIT_ON_CLOSE);
  setSize(400, 800);
- setBounds(0, 1000, 400, 800);
+ //setBounds(0, 10000, 400, 900);
  setResizable(false);
 
  initializeBoard();
@@ -79,7 +77,7 @@ public class MancalaGame extends JFrame {
 
  // Draw stores
  pitBounds[6] = new Rectangle(20, height / 2 - pitHeight * 3 + 530, pitWidth+250, pitHeight * 6-400); // Player 1 store (left)
- pitBounds[13] = new Rectangle(width - pitWidth - 20, height / 2 - pitHeight * 3 - 20, pitWidth, pitHeight * 6-400); // Player 2 store (right)
+ pitBounds[13] = new Rectangle(0, 4, pitWidth, pitHeight * 6-400); // Player 2 store (right)
 
  g2.setColor(new Color(139, 69, 19));
  g2.fillRect(pitBounds[6].x, pitBounds[6].y, pitBounds[6].width, pitBounds[6].height);
@@ -92,7 +90,7 @@ public class MancalaGame extends JFrame {
  for (int row = 0; row < 6; row++) {
  // Player 2 (top to bottom left side)
  int p2Index = 12 - row;
- int y = 40 + row * (pitHeight + 10);
+ int y = 5 + row * (pitHeight - 1000);//this is where the circles get adjusted
  pitBounds[p2Index] = new Rectangle(width / 2 - pitWidth - 10, y, pitWidth, pitHeight);
  g2.fillOval(pitBounds[p2Index].x, pitBounds[p2Index].y, pitWidth, pitHeight);
  drawPebbles(g2, p2Index, pitBounds[p2Index]);
