@@ -18,13 +18,21 @@ import javax.sound.sampled.Clip;
     
 }*/
 
+<<<<<<< HEAD
 public class MancalaGameVarenya  extends JFrame {
+=======
+public class MancalaGameTest extends JFrame {
+>>>>>>> 02318cf657fad4edf52345eae491b2d5d0f52cd8
  private int[] board = new int[14]; // 6 pits per side + 2 stores
  private boolean playerOneTurn = true;
  private BoardPanel boardPanel;
  private boolean animating = false;
 
+<<<<<<< HEAD
  public MancalaGameVarenya() {
+=======
+ public MancalaGameTest() {
+>>>>>>> 02318cf657fad4edf52345eae491b2d5d0f52cd8
  setTitle("Mancala Game - Vertical with Animation & Sound");
  setDefaultCloseOperation(EXIT_ON_CLOSE);
  setSize(400, 800);
@@ -224,6 +232,6 @@ public class MancalaGameVarenya  extends JFrame {
  }
 
  public static void main(String[] args) {
- SwingUtilities.invokeLater(MancalaGame::new);
+ SwingUtilities.invokeLater(MancalaGameTest::new);
  }
 }
