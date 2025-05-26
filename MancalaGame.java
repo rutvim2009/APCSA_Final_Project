@@ -6,7 +6,7 @@ import javax.sound.sampled.*;
 
 public class MancalaGame extends JFrame {
     private Clip clip;
-    private int[] board = new int[14]; // 6 pits per side + 2 stores
+    private int[] board = new int[14]; 
     private boolean playerOneTurn = true;
     private BoardPanel boardPanel;
     private boolean animating = false;
@@ -19,17 +19,15 @@ public class MancalaGame extends JFrame {
         int spacing = 10;
         int totalPitsHeight = 6 * pitHeight + 5 * spacing;
         int storeHeight = pitHeight;
+
     
-        int verticalPaddingTop = 40;    // Extra space above top store & label
-        int verticalPaddingBottom = 40; // Extra space below bottom store & label
+        setSize(300, totalPitsHeight + 2 * storeHeight + 2 * spacing + 80);
     
-        setSize(300, totalPitsHeight + 2 * storeHeight + 2 * spacing + verticalPaddingTop + verticalPaddingBottom);
-    
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null); 
         setResizable(false);
     
         try {
-            File soundFile = new File("/Users/RutviM/Downloads/newproj.wav"); // Update path if needed
+            File soundFile = new File("/Users/RutviM/Downloads/newproj.wav"); 
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
             clip = AudioSystem.getClip();
             clip.open(audioIn);
@@ -72,7 +70,7 @@ public class MancalaGame extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
-            setBackground(new Color(222, 184, 135)); // Wood-like background
+            setBackground(new Color(222, 184, 135));
         
             int width = getWidth();
             int height = getHeight();
@@ -80,44 +78,41 @@ public class MancalaGame extends JFrame {
             int pitHeight = 80;
             int spacing = 10;
         
-            int verticalPaddingTop = 40;
-            int verticalPaddingBottom = 40;
+            int shiftUp = 20;
         
-            int shiftUp = 20;  // amount to shift up everything but Player 1's store
+            // player 2 store
+            pitBounds[13] = new Rectangle(width / 2 - pitWidth / 2, 50 - shiftUp, pitWidth, pitHeight);
         
-            // Player 2 store (top), shifted UP by shiftUp
-            pitBounds[13] = new Rectangle(width / 2 - pitWidth / 2, 10 + verticalPaddingTop - shiftUp, pitWidth, pitHeight);
+            // player 1 store
+            pitBounds[6] = new Rectangle(width / 2 - pitWidth / 2, height - pitHeight - 50, pitWidth, pitHeight);
         
-            // Player 1 store (bottom), NO shift (stay put)
-            pitBounds[6] = new Rectangle(width / 2 - pitWidth / 2, height - pitHeight - 10 - verticalPaddingBottom, pitWidth, pitHeight);
-        
-            g2.setColor(new Color(139, 69, 19)); // Store color
+            g2.setColor(new Color(139, 69, 19)); 
             g2.fillRect(pitBounds[13].x, pitBounds[13].y, pitBounds[13].width, pitBounds[13].height);
             g2.fillRect(pitBounds[6].x, pitBounds[6].y, pitBounds[6].width, pitBounds[6].height);
         
             drawPebbles(g2, 13, pitBounds[13]);
             drawPebbles(g2, 6, pitBounds[6]);
         
-            // Draw pits between stores, shifted UP by shiftUp
+            
             int startY = pitBounds[13].y + pitHeight + spacing;
         
             for (int row = 0; row < 6; row++) {
                 int y = startY + row * (pitHeight + spacing);
         
-                // Left column: Player 2 pits (12 to 7)
+                // left column pits
                 int p2Index = 12 - row;
                 pitBounds[p2Index] = new Rectangle(width / 2 - pitWidth - spacing, y, pitWidth, pitHeight);
                 g2.fillOval(pitBounds[p2Index].x, pitBounds[p2Index].y, pitWidth, pitHeight);
                 drawPebbles(g2, p2Index, pitBounds[p2Index]);
         
-                // Right column: Player 1 pits (0 to 5)
+                // right column pits
                 int p1Index = row;
                 pitBounds[p1Index] = new Rectangle(width / 2 + spacing, y, pitWidth, pitHeight);
                 g2.fillOval(pitBounds[p1Index].x, pitBounds[p1Index].y, pitWidth, pitHeight);
                 drawPebbles(g2, p1Index, pitBounds[p1Index]);
             }
         
-            // Draw player labels as before (no changes needed)
+            
             g2.setFont(new Font("SansSerif", Font.BOLD, 16));
         
             String label2 = "Player 2";
@@ -128,15 +123,15 @@ public class MancalaGame extends JFrame {
             int label2Width = fm.stringWidth(label2);
             int label1Width = fm.stringWidth(label1);
         
-            // Player 2 label (above top store)
+            
             int label2X = pitBounds[13].x + (pitBounds[13].width - label2Width) / 2;
-            int label2Y = pitBounds[13].y - 10; // Slightly above top store
+            int label2Y = pitBounds[13].y - 10; 
         
-            // Player 1 label (below bottom store)
+            
             int label1X = pitBounds[6].x + (pitBounds[6].width - label1Width) / 2;
-            int label1Y = pitBounds[6].y + pitBounds[6].height + 25; // Below bottom store
+            int label1Y = pitBounds[6].y + pitBounds[6].height + 25; 
         
-            // Highlight active player
+            // make active player label red
             if (playerOneTurn) {
                 g2.setColor(Color.RED);
                 g2.drawString(label1, label1X, label1Y);
@@ -184,43 +179,34 @@ public class MancalaGame extends JFrame {
         Timer timer = new Timer(300, null);
         timer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                currentIndex[0] = (currentIndex[0] + 1) % 14;
-    
-                // Skip opponent's store
-                if ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6)) {
+                do {
                     currentIndex[0] = (currentIndex[0] + 1) % 14;
-                }
+                  // skip the other player's store
+                } while ((playerOneTurn && currentIndex[0] == 13) || (!playerOneTurn && currentIndex[0] == 6));
     
-                // Play sound each time a pebble is placed
+                board[currentIndex[0]]++;
+                remainingStones[0]--;
+    
+                // Play sound
                 if (clip != null) {
                     clip.setFramePosition(0);
                     clip.start();
                 }
     
-                board[currentIndex[0]]++;
-                remainingStones[0]--;
-    
                 boardPanel.repaint();
     
                 if (remainingStones[0] == 0) {
-                    int lastPit = currentIndex[0];
-                    boolean onPlayersSide = playerOneTurn ? (lastPit >= 0 && lastPit <= 5) : (lastPit >= 7 && lastPit <= 12);
-    
-                    if (onPlayersSide && board[lastPit] > 1) {
-                        remainingStones[0] = board[lastPit];
-                        board[lastPit] = 0;
-                    } else {
-                        timer.stop();
-                        playerOneTurn = !playerOneTurn;
-                        animating = false;
-                        checkGameOver();
-                    }
+                    timer.stop();
+                    animating = false;
+                    playerOneTurn = !playerOneTurn; // switch plaayer turn
+                    checkGameOver();
                 }
             }
         });
     
         timer.start();
     }
+    
     
     
     
@@ -248,7 +234,7 @@ public class MancalaGame extends JFrame {
 
             boardPanel.repaint();
 
-            String winner;
+            String winner = "";
             if (board[6] > board[13]) {
                 winner = "Player 1 Wins!";
             } else if (board[13] > board[6]) {
