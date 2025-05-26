@@ -161,13 +161,12 @@ public class MancalaGame extends JFrame {
     }
 
     private void handlePitClick(int index) {
-        if ((playerOneTurn && index >= 0 && index <= 5) || (!playerOneTurn && index >= 7 && index <= 12)) {
+        if (index != 6 && index != 13 && board[index] > 0 && !animating) {
             int stones = board[index];
-            if (stones == 0 || animating) return;
-
             board[index] = 0;
             animateMove(index, stones);
         }
+        
     }
 
     private void animateMove(int startIndex, int stones) {
@@ -212,28 +211,24 @@ public class MancalaGame extends JFrame {
     
 
     private void checkGameOver() {
-        boolean player1Empty = true;
-        boolean player2Empty = true;
-
+        boolean allPitsEmpty = true;
+    
         for (int i = 0; i <= 5; i++) {
-            if (board[i] != 0) player1Empty = false;
+            if (board[i] != 0) {
+                allPitsEmpty = false;
+                break;
+            }
         }
         for (int i = 7; i <= 12; i++) {
-            if (board[i] != 0) player2Empty = false;
+            if (board[i] != 0) {
+                allPitsEmpty = false;
+                break;
+            }
         }
-
-        if (player1Empty || player2Empty) {
-            for (int i = 0; i <= 5; i++) {
-                board[6] += board[i];
-                board[i] = 0;
-            }
-            for (int i = 7; i <= 12; i++) {
-                board[13] += board[i];
-                board[i] = 0;
-            }
-
+    
+        if (allPitsEmpty) {
             boardPanel.repaint();
-
+    
             String winner = "";
             if (board[6] > board[13]) {
                 winner = "Player 1 Wins!";
@@ -242,11 +237,12 @@ public class MancalaGame extends JFrame {
             } else {
                 winner = "It's a tie!";
             }
-
+    
             JOptionPane.showMessageDialog(this, winner);
             System.exit(0);
         }
     }
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MancalaGame::new);
