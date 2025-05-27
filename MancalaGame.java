@@ -12,7 +12,7 @@ public class MancalaGame extends JFrame {
     private boolean animating = false;
 
     public MancalaGame() {
-        setTitle("Mancala Game - Vertical with Animation & Sound");
+        setTitle("Mancala Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     
         int pitHeight = 80;
